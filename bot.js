@@ -22,9 +22,7 @@ client.on('message', (receivedMessage) => {
   if(receivedMessage.author == client.user){
     return;
   }
-
   // receivedMessage.channel.send("Mensagem recebida " + receivedMessage.author.toString() + ": " + receivedMessage.content);
-
   if(receivedMessage.content.startsWith("!")){
     processCommand(receivedMessage);
   }
@@ -40,6 +38,14 @@ function processCommand(receivedMessage){
   if(primaryCommand == "help"){
     helpCommands(arguments, receivedMessage);
   }
+
+  if(primaryCommand == "server"){
+    serverCommands(arguments, receivedMessage);
+  }
+
+  if(primaryCommand == "user"){
+    userCommands(arguments, receivedMessage);
+  }
 }
 
 function helpCommands(arguments, receivedMessage){
@@ -47,6 +53,18 @@ function helpCommands(arguments, receivedMessage){
     receivedMessage.channel.send("Não entendi seu comando. Tente `!help [topico]`");
   } else {
     receivedMessage.channel.send("Parece que você precisa de ajuda com " + arguments);
+  }
+}
+
+function serverCommands(arguments, receivedMessage){
+  if(arguments.length == 0){
+    receivedMessage.channel.send(`O nome desse server é ${receivedMessage.guild.name}`);
+  }
+}
+
+function userCommands(arguments, receivedMessage){
+  if(arguments.length == 0){
+    receivedMessage.channel.send(`Seu usuário: ${receivedMessage.author.username}\nSeu ID: ${receivedMessage.author.id}`)
   }
 }
 
