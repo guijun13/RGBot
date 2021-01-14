@@ -7,6 +7,8 @@ const client = new Discord.Client();
 
 const cooldowns = new Discord.Collection();
 
+// const fetch = require('node-fetch');
+
 client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
@@ -31,7 +33,7 @@ client.on('ready', () => {
   generalChannel.send("Hello world!");
 })
 
-client.on('message', (receivedMessage) => {
+client.on('message', async (receivedMessage) => {
   // if(receivedMessage.author == client.user) return;
 
   // if(receivedMessage.content.startsWith("!")){
