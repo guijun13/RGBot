@@ -5,6 +5,8 @@ const fs = require('fs');
 const Discord = require('discord.js');
 const client = new Discord.Client();
 
+const cooldowns = new Discord.Collection();
+
 client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
@@ -48,12 +50,33 @@ client.on('message', (receivedMessage) => {
 
   const command = client.commands.get(commandName);
 
+  // Required arguments config
   if(command.args && !args.length){
     return receivedMessage.channel.send(`Não entendi seu comando. Tente \`${receivedMessage} [topic]\``);
   }
+
+  // Cooldown config
+  if(!cooldowns.has(command.name)){
+    cooldowns.set(command.name, new Discord.Collection());
+  }
+
+  const now = Date.now();
+  const timestamps = cooldowns.get(command.name);
+  const cooldownAmount = (command.cooldown || 3) * 1000;
+
+  if(timestamps.has(receivedMessage.author.id)){
+    const expirationTime = timestamps.get(receivedMessage.author.id) + cooldownAmount;
+
+    if(now < expirationTime){
+      const timeLeft = (expirationTime - now) / 1000;
+      return receivedMessage.reply(`Espere ${timeLeft.toFixed(1)} segundos antes de usar \`${receivedMessage}\` novamente`);
+    }
+  }
+
+  timestamps.set(receivedMessage.author.id, now);
+  setTimeout(() => timestamps.delete(receivedMessage.author.id), cooldownAmount);
   
   try{
-    // client.commands.get(commandName).execute(receivedMessage, args);
     command.execute(receivedMessage, args);
   } catch (error) {
     console.error(error);
