@@ -1,5 +1,6 @@
 module.exports = {
   name: 'server',
+  aliases: ['servidor', 's'],
   description: 'server command',
   args: false,
   execute(receivedMessage){

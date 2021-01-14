@@ -46,9 +46,13 @@ client.on('message', (receivedMessage) => {
   const args = receivedMessage.content.slice(prefix.length).trim().split(/ +/);
   const commandName = args.shift().toLowerCase();
 
-  if(!client.commands.has(commandName)) return console.log('Nao tem esse comando');
+  // if(!client.commands.has(commandName)) return console.log('Nao tem esse comando');
 
-  const command = client.commands.get(commandName);
+  // const command = client.commands.get(commandName);
+
+  const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd. aliases.includes(commandName));
+
+  if(!command) return console.log('Nao tem esse comando');
 
   // Required arguments config
   if(command.args && !args.length){
@@ -62,7 +66,7 @@ client.on('message', (receivedMessage) => {
 
   const now = Date.now();
   const timestamps = cooldowns.get(command.name);
-  const cooldownAmount = (command.cooldown || 3) * 1000;
+  const cooldownAmount = (command.cooldown) * 1000;
 
   if(timestamps.has(receivedMessage.author.id)){
     const expirationTime = timestamps.get(receivedMessage.author.id) + cooldownAmount;
