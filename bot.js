@@ -60,38 +60,4 @@ client.on('message', (receivedMessage) => {
 //   let primaryCommand = splitCommand[0];
 //   let command = splitCommand.slice(1);
 
-//   if(primaryCommand == "help"){
-//     helpCommands(command, receivedMessage);
-//   }
-
-//   if(primaryCommand == "server"){
-//     serverCommands(command, receivedMessage);
-//   }
-
-//   if(primaryCommand == "user"){
-//     userCommands(command, receivedMessage);
-//   }
-// }
-
-// function helpCommands(command, receivedMessage){
-//   if(command.length == 0){
-//     receivedMessage.channel.send("Não entendi seu comando. Tente `!help [topico]`");
-//   } else {
-//     receivedMessage.channel.send("Parece que você precisa de ajuda com " + command);
-//   }
-//   client.commands.get('help').execute(receivedMessage, command);
-// }
-
-// function serverCommands(command, receivedMessage){
-//   if(command.length == 0){
-//     receivedMessage.channel.send(`O nome desse server é ${receivedMessage.guild.name}`);
-//   }
-// }
-
-// function userCommands(command, receivedMessage){
-//   if(command.length == 0){
-//     receivedMessage.channel.send(`Seu usuário: ${receivedMessage.author.username}\nSeu ID: ${receivedMessage.author.id}`)
-//   }
-// }
-
 client.login(process.env.BOTTOKEN);
