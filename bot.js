@@ -44,16 +44,15 @@ client.on('message', (receivedMessage) => {
   const args = receivedMessage.content.slice(prefix.length).trim().split(/ +/);
   const command = args.shift().toLowerCase();
 
-  if(!client.commands.has(command)) return console.log('deu ruim');
+  if(!client.commands.has(command)) return console.log('Nao tem esse comando');
   
   try{
-    client.commands.get(command).execute(receivedMessage, command);
+    client.commands.get(command).execute(receivedMessage, args);
   } catch (error) {
     console.error(error);
     receivedMessage.reply('Houve um erro ao executar esse comando!');
   }
-
-})
+});
 
 // function processCommand(receivedMessage){
 //   let fullCommand = receivedMessage.content.substr(1);
@@ -75,11 +74,11 @@ client.on('message', (receivedMessage) => {
 // }
 
 // function helpCommands(command, receivedMessage){
-//   // if(command.length == 0){
-//   //   receivedMessage.channel.send("Não entendi seu comando. Tente `!help [topico]`");
-//   // } else {
-//   //   receivedMessage.channel.send("Parece que você precisa de ajuda com " + command);
-//   // }
+//   if(command.length == 0){
+//     receivedMessage.channel.send("Não entendi seu comando. Tente `!help [topico]`");
+//   } else {
+//     receivedMessage.channel.send("Parece que você precisa de ajuda com " + command);
+//   }
 //   client.commands.get('help').execute(receivedMessage, command);
 // }
 
