@@ -42,12 +42,19 @@ client.on('message', (receivedMessage) => {
   if(!receivedMessage.content.startsWith(prefix) || receivedMessage.author.bot) return;
 
   const args = receivedMessage.content.slice(prefix.length).trim().split(/ +/);
-  const command = args.shift().toLowerCase();
+  const commandName = args.shift().toLowerCase();
 
-  if(!client.commands.has(command)) return console.log('Nao tem esse comando');
+  if(!client.commands.has(commandName)) return console.log('Nao tem esse comando');
+
+  const command = client.commands.get(commandName);
+
+  if(command.args && !args.length){
+    return receivedMessage.channel.send(`Não entendi seu comando. Tente \`${receivedMessage} [topic]\``);
+  }
   
   try{
-    client.commands.get(command).execute(receivedMessage, args);
+    // client.commands.get(commandName).execute(receivedMessage, args);
+    command.execute(receivedMessage, args);
   } catch (error) {
     console.error(error);
     receivedMessage.reply('Houve um erro ao executar esse comando!');
