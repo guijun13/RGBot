@@ -7,11 +7,8 @@ const client = new Discord.Client();
 
 const cooldowns = new Discord.Collection();
 
-// const fetch = require('node-fetch');
-
 client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
-
 
 for (const file of commandFiles) {
   const command = require(`./commands/${file}`);
@@ -34,13 +31,6 @@ client.on('ready', () => {
 })
 
 client.on('message', async (receivedMessage) => {
-  // if(receivedMessage.author == client.user) return;
-
-  // if(receivedMessage.content.startsWith("!")){
-  //   processCommand(receivedMessage);
-  // }
-  
-  // receivedMessage.channel.send("Mensagem recebida " + receivedMessage.author.toString() + ": " + receivedMessage.content);
   let prefix = "!";
 
   if(!receivedMessage.content.startsWith(prefix) || receivedMessage.author.bot) return;
@@ -48,13 +38,9 @@ client.on('message', async (receivedMessage) => {
   const args = receivedMessage.content.slice(prefix.length).trim().split(/ +/);
   const commandName = args.shift().toLowerCase();
 
-  // if(!client.commands.has(commandName)) return console.log('Nao tem esse comando');
-
-  // const command = client.commands.get(commandName);
-
   const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd. aliases.includes(commandName));
 
-  if(!command) return console.log('Nao tem esse comando');
+  if(!command) return receivedMessage.channel.send(`Nao tem o comando \`${receivedMessage}\``);
 
   // Required arguments config
   if(command.args && !args.length){
